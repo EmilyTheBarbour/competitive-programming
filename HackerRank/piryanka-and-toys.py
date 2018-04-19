@@ -1,16 +1,46 @@
 
+def toys(weights):
+    crates = []
+    weights = bubbleSort(weights)
+
+    while (len(weights) > 0):
+        maxWeight = weights[0] + 4
+        crate = []
+        while(weights[0] <= maxWeight):
+            crate.append(weights.pop(0))
+            if (len(weights) == 0):
+                break
+        crates.append(crate)
+    
+    return crates
+
+def bubbleSort(arr):
+    sort = False
+    temp = 0
+    numpairs = len(arr) - 1
+
+    while (not sort):
+        sort = True
+        for i in range(numpairs):
+            if (arr[i] > arr[i + 1]):
+                temp = arr[i]
+                arr[i] = arr[i + 1]
+                arr[i + 1] = temp
+                sort = False
+        numpairs -= 1
+
+    return arr
 
 def InputWeights():
     file = open("input.txt")
     n = file.readline()
-    weight_string = file.readline()
-    weights = map(int, weight_string.split(' '))
+    weights = [int (n) for n in file.readline().split(' ')]
     return int(n), weights
 
 def main():
     n, weights = InputWeights()
-    print(n)
-
+    crates = toys(weights)
+    print(len(crates))
 
 if __name__ == "__main__":
     main()
