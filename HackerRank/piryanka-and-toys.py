@@ -31,7 +31,7 @@ def bubbleSort(arr):
     return arr
 
 def InputWeights():
-    file = open("input.txt")
+    file = open("HackerRank\\input.txt")
     n = file.readline()
     weights = [int (n) for n in file.readline().split()]
     return int(n), weights
