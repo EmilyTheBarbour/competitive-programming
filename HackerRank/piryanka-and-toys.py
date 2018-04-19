@@ -40,7 +40,8 @@ def InputWeights():
 def main():
     n, weights = InputWeights()
     crates = toys(weights)
-    print(len(crates))
+    
+    
 
 if __name__ == "__main__":
     main()
