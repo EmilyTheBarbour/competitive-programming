@@ -1,4 +1,3 @@
-
 def toys(weights):
     crates = []
     weights = bubbleSort(weights)
@@ -34,14 +33,17 @@ def bubbleSort(arr):
 def InputWeights():
     file = open("input.txt")
     n = file.readline()
-    weights = [int (n) for n in file.readline().split(' ')]
+    weights = [int (n) for n in file.readline().split()]
     return int(n), weights
 
 def main():
     n, weights = InputWeights()
     crates = toys(weights)
+
+    for crate in crates:
+        print (crate)
     
-    
+    print(len(crates))
 
 if __name__ == "__main__":
     main()
