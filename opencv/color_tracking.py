@@ -4,15 +4,20 @@ import numpy as np
 lowerBound=np.array([33,80,40])
 upperBound=np.array([102,255,255])
 
+height = 220
+width = 340
+
 cam= cv2.VideoCapture(0)
 kernelOpen=np.ones((5,5))
 kernelClose=np.ones((20,20))
+
+blankImage = np.zeros((height, width, 3), np.uint8)
 
 font=cv2.cv.InitFont(cv2.cv.CV_FONT_HERSHEY_SIMPLEX,2,0.5,0,3,1)
 
 while True:
     ret, img=cam.read()
-    img=cv2.resize(img,(340,220))
+    img=cv2.resize(img,(width,height))
 
     #convert BGR to HSV
     imgHSV= cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -24,12 +29,30 @@ while True:
 
     maskFinal=maskClose
     conts,h=cv2.findContours(maskFinal.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+
     
-    cv2.drawContours(img,conts,-1,(255,0,0),3)
+    largestVal = 0
+    largest = 0
+    #cv2.drawContours(img,conts,-1,(255,0,0),3)
     for i in range(len(conts)):
         x,y,w,h=cv2.boundingRect(conts[i])
-        cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255), 2)
-        cv2.cv.PutText(cv2.cv.fromarray(img), str(i+1),(x,y+h),font,(0,255,255))
+        if w*h > largestVal:
+            largest = i
+            largestVal = w*h
+        #cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255), 2)
+        #cv2.cv.PutText(cv2.cv.fromarray(img), str(x),(x,y+h),font,(x,y,255))
+
+    try:
+        x,y,w,h=cv2.boundingRect(conts[largest])
+        y_offset = max(0, y - 50)
+        x_offset = max(0, x - 50)
+        w_offset = min(width - x_offset, w + 100)
+        h_offset = min(height - y_offset, h + 100)
+        region = img[y_offset:y_offset+h_offset, x_offset:x_offset+w_offset]
+        cv2.imshow("region", region)
+    except:
+        cv2.imshow("region", blankImage)
+
     cv2.imshow("maskClose",maskClose)
     cv2.imshow("maskOpen",maskOpen)
     cv2.imshow("mask",mask)

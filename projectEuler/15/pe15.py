@@ -1,22 +1,20 @@
-def generatePath(n):
-    arr = []
-    for i in range (n):
-        arr.append(1)
-    for i in range (n):
-        arr.append(0)
+totalPaths = 0
 
-    return arr
+def generatePaths(x, y, size):
+    global totalPaths
+    if x < size:
+        generatePaths(x + 1, y, size)
+    if y < size:
+        generatePaths(x, y + 1, size)
+    if x == size and y == size:
+        totalPaths += 1
+        if totalPaths % 10000 == 0:
+            print(totalPaths)
 
-def printPath(path):
-    for num in path:
-        if num == 1:
-            print("---")
-        if num == 0:
-            print("|")
 
 def main():
-    arr = generatePath(2)
-    printPath(arr)
+    generatePaths(0, 0, 20)
+    print(totalPaths)
 
 if __name__ == "__main__":
     main()
